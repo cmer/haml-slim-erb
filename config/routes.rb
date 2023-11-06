@@ -4,5 +4,4 @@ Rails.application.routes.draw do
   get 'notes_haml/index'
 
   get 'notes_erb/index'
-
 end
