@@ -31,11 +31,302 @@ Findings:
 - All 3 templating languages are roughly equal in terms of performance.
 
 ## Request Per Second by environment
-
+-------------------------------------------------------------------------------------
 |             | ERB #1   | ERB #2   | SLIM #1   | SLIM #2   | HAML #1   | HAML #2   |
-| ----------- | -------- | -------- | --------- | --------- | --------- | --------- |
 | Development | 45       | 48       | 46        | 49        | 49        | 46        |
 | Production  | 566      | 670      | 540       | 702       | 599       | 699       |
+-------------------------------------------------------------------------------------
+
+
+## ## Benchmarking Results - RAILS_ENV=production
+
+Min/Max threads: 5
+Workers: 10
+
+TLDR: They're all about the same at approx 700 requests per second once warmed up. Slim and HAML are roughly 5% faster than ERB.
+
+### ERB #1
+
+```
+Summary:
+  Total:	0.3533 secs
+  Slowest:	0.3316 secs
+  Fastest:	0.0047 secs
+  Average:	0.0753 secs
+  Requests/sec:	566.0745
+
+  Total data:	1533800 bytes
+  Size/request:	7669 bytes
+
+Response time histogram:
+  0.005 [1]	|
+  0.037 [103]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.070 [25]	|■■■■■■■■■■
+  0.103 [12]	|■■■■■
+  0.135 [9]	|■■■
+  0.168 [8]	|■■■
+  0.201 [21]	|■■■■■■■■
+  0.233 [11]	|■■■■
+  0.266 [6]	|■■
+  0.299 [2]	|■
+  0.332 [2]	|■
+
+
+Latency distribution:
+  10% in 0.0077 secs
+  25% in 0.0122 secs
+  50% in 0.0350 secs
+  75% in 0.1355 secs
+  90% in 0.2030 secs
+  95% in 0.2389 secs
+  99% in 0.3283 secs
+
+Details (average, fastest, slowest):
+  DNS+dialup:	0.0018 secs, 0.0047 secs, 0.3316 secs
+  DNS-lookup:	0.0005 secs, 0.0000 secs, 0.0023 secs
+  req write:	0.0000 secs, 0.0000 secs, 0.0004 secs
+  resp wait:	0.0728 secs, 0.0046 secs, 0.3204 secs
+  resp read:	0.0001 secs, 0.0000 secs, 0.0078 secs
+
+Status code distribution:
+  [200]	200 responses
+
+```
+
+### ERB #2
+
+```
+Summary:
+  Total:	0.2986 secs
+  Slowest:	0.2282 secs
+  Fastest:	0.0054 secs
+  Average:	0.0659 secs
+  Requests/sec:	669.8688
+
+  Total data:	1533800 bytes
+  Size/request:	7669 bytes
+
+Response time histogram:
+  0.005 [1]	|■
+  0.028 [56]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.050 [33]	|■■■■■■■■■■■■■■■■■■■■■■■■
+  0.072 [27]	|■■■■■■■■■■■■■■■■■■■
+  0.094 [28]	|■■■■■■■■■■■■■■■■■■■■
+  0.117 [24]	|■■■■■■■■■■■■■■■■■
+  0.139 [17]	|■■■■■■■■■■■■
+  0.161 [6]	|■■■■
+  0.184 [4]	|■■■
+  0.206 [2]	|■
+  0.228 [2]	|■
+
+
+Latency distribution:
+  10% in 0.0091 secs
+  25% in 0.0225 secs
+  50% in 0.0607 secs
+  75% in 0.0994 secs
+  90% in 0.1254 secs
+  95% in 0.1567 secs
+  99% in 0.2258 secs
+
+Details (average, fastest, slowest):
+  DNS+dialup:	0.0014 secs, 0.0054 secs, 0.2282 secs
+  DNS-lookup:	0.0004 secs, 0.0000 secs, 0.0022 secs
+  req write:	0.0001 secs, 0.0000 secs, 0.0025 secs
+  resp wait:	0.0640 secs, 0.0053 secs, 0.2207 secs
+  resp read:	0.0001 secs, 0.0000 secs, 0.0055 secs
+
+Status code distribution:
+  [200]	200 responses
+```
+
+### SLIM #1
+
+```
+Summary:
+  Total:	0.3701 secs
+  Slowest:	0.3536 secs
+  Fastest:	0.0049 secs
+  Average:	0.0759 secs
+  Requests/sec:	540.4134
+
+  Total data:	1286200 bytes
+  Size/request:	6431 bytes
+
+Response time histogram:
+  0.005 [1]	|
+  0.040 [108]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.075 [21]	|■■■■■■■■
+  0.109 [14]	|■■■■■
+  0.144 [6]	|■■
+  0.179 [13]	|■■■■■
+  0.214 [18]	|■■■■■■■
+  0.249 [11]	|■■■■
+  0.284 [5]	|■■
+  0.319 [1]	|
+  0.354 [2]	|■
+
+
+Latency distribution:
+  10% in 0.0075 secs
+  25% in 0.0110 secs
+  50% in 0.0315 secs
+  75% in 0.1598 secs
+  90% in 0.2080 secs
+  95% in 0.2436 secs
+  99% in 0.3193 secs
+
+Details (average, fastest, slowest):
+  DNS+dialup:	0.0015 secs, 0.0049 secs, 0.3536 secs
+  DNS-lookup:	0.0004 secs, 0.0000 secs, 0.0019 secs
+  req write:	0.0001 secs, 0.0000 secs, 0.0035 secs
+  resp wait:	0.0737 secs, 0.0048 secs, 0.3466 secs
+  resp read:	0.0001 secs, 0.0000 secs, 0.0013 secs
+
+Status code distribution:
+  [200]	200 responses
+```
+
+### SLIM #2
+
+```
+Summary:
+  Total:	0.2850 secs
+  Slowest:	0.1944 secs
+  Fastest:	0.0058 secs
+  Average:	0.0613 secs
+  Requests/sec:	701.6319
+
+  Total data:	1286200 bytes
+  Size/request:	6431 bytes
+
+Response time histogram:
+  0.006 [1]	|■
+  0.025 [49]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.044 [37]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.062 [34]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.081 [23]	|■■■■■■■■■■■■■■■■■■■
+  0.100 [16]	|■■■■■■■■■■■■■
+  0.119 [11]	|■■■■■■■■■
+  0.138 [14]	|■■■■■■■■■■■
+  0.157 [6]	|■■■■■
+  0.176 [3]	|■■
+  0.194 [6]	|■■■■■
+
+
+Latency distribution:
+  10% in 0.0101 secs
+  25% in 0.0249 secs
+  50% in 0.0503 secs
+  75% in 0.0882 secs
+  90% in 0.1310 secs
+  95% in 0.1565 secs
+  99% in 0.1925 secs
+
+Details (average, fastest, slowest):
+  DNS+dialup:	0.0020 secs, 0.0058 secs, 0.1944 secs
+  DNS-lookup:	0.0005 secs, 0.0000 secs, 0.0026 secs
+  req write:	0.0001 secs, 0.0000 secs, 0.0078 secs
+  resp wait:	0.0585 secs, 0.0058 secs, 0.1944 secs
+  resp read:	0.0001 secs, 0.0000 secs, 0.0055 secs
+
+Status code distribution:
+  [200]	200 responses
+```
+
+### HAML #1
+
+```
+Summary:
+  Total:	0.3340 secs
+  Slowest:	0.2974 secs
+  Fastest:	0.0053 secs
+  Average:	0.0712 secs
+  Requests/sec:	598.8734
+
+  Total data:	1296600 bytes
+  Size/request:	6483 bytes
+
+Response time histogram:
+  0.005 [1]	|
+  0.034 [100]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.064 [28]	|■■■■■■■■■■■
+  0.093 [11]	|■■■■
+  0.122 [8]	|■■■
+  0.151 [9]	|■■■■
+  0.181 [16]	|■■■■■■
+  0.210 [13]	|■■■■■
+  0.239 [5]	|■■
+  0.268 [4]	|■■
+  0.297 [5]	|■■
+
+
+Latency distribution:
+  10% in 0.0077 secs
+  25% in 0.0109 secs
+  50% in 0.0343 secs
+  75% in 0.1404 secs
+  90% in 0.2034 secs
+  95% in 0.2380 secs
+  99% in 0.2920 secs
+
+Details (average, fastest, slowest):
+  DNS+dialup:	0.0023 secs, 0.0053 secs, 0.2974 secs
+  DNS-lookup:	0.0005 secs, 0.0000 secs, 0.0026 secs
+  req write:	0.0001 secs, 0.0000 secs, 0.0012 secs
+  resp wait:	0.0683 secs, 0.0052 secs, 0.2896 secs
+  resp read:	0.0001 secs, 0.0000 secs, 0.0004 secs
+
+Status code distribution:
+  [200]	200 responses
+```
+
+### HAML #2
+
+```
+Summary:
+  Total:	0.2863 secs
+  Slowest:	0.2503 secs
+  Fastest:	0.0055 secs
+  Average:	0.0590 secs
+  Requests/sec:	698.5472
+
+  Total data:	1296600 bytes
+  Size/request:	6483 bytes
+
+Response time histogram:
+  0.005 [1]	|■
+  0.030 [76]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.054 [33]	|■■■■■■■■■■■■■■■■■
+  0.079 [27]	|■■■■■■■■■■■■■■
+  0.103 [26]	|■■■■■■■■■■■■■■
+  0.128 [19]	|■■■■■■■■■■
+  0.152 [8]	|■■■■
+  0.177 [7]	|■■■■
+  0.201 [1]	|■
+  0.226 [1]	|■
+  0.250 [1]	|■
+
+
+Latency distribution:
+  10% in 0.0089 secs
+  25% in 0.0200 secs
+  50% in 0.0455 secs
+  75% in 0.0913 secs
+  90% in 0.1265 secs
+  95% in 0.1539 secs
+  99% in 0.2159 secs
+
+Details (average, fastest, slowest):
+  DNS+dialup:	0.0017 secs, 0.0055 secs, 0.2503 secs
+  DNS-lookup:	0.0005 secs, 0.0000 secs, 0.0020 secs
+  req write:	0.0000 secs, 0.0000 secs, 0.0004 secs
+  resp wait:	0.0567 secs, 0.0054 secs, 0.2406 secs
+  resp read:	0.0001 secs, 0.0000 secs, 0.0043 secs
+
+Status code distribution:
+  [200]	200 responses
+```
 
 
 ## Benchmarking Results - RAILS_ENV=development
@@ -364,296 +655,6 @@ Details (average, fastest, slowest):
   req write:	0.0000 secs, 0.0000 secs, 0.0009 secs
   resp wait:	0.5931 secs, 0.0134 secs, 4.3198 secs
   resp read:	0.0000 secs, 0.0000 secs, 0.0001 secs
-
-Status code distribution:
-  [200]	200 responses
-```
-
-## ## Benchmarking Results - RAILS_ENV=production
-
-Min/Max threads: 5
-Workers: 10
-
-TLDR: They're all about the same at approx 700 requests per second once warmed up. Slim and HAML are roughly 5% faster than ERB.
-
-### ERB #1
-
-```
-Summary:
-  Total:	0.3533 secs
-  Slowest:	0.3316 secs
-  Fastest:	0.0047 secs
-  Average:	0.0753 secs
-  Requests/sec:	566.0745
-
-  Total data:	1533800 bytes
-  Size/request:	7669 bytes
-
-Response time histogram:
-  0.005 [1]	|
-  0.037 [103]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.070 [25]	|■■■■■■■■■■
-  0.103 [12]	|■■■■■
-  0.135 [9]	|■■■
-  0.168 [8]	|■■■
-  0.201 [21]	|■■■■■■■■
-  0.233 [11]	|■■■■
-  0.266 [6]	|■■
-  0.299 [2]	|■
-  0.332 [2]	|■
-
-
-Latency distribution:
-  10% in 0.0077 secs
-  25% in 0.0122 secs
-  50% in 0.0350 secs
-  75% in 0.1355 secs
-  90% in 0.2030 secs
-  95% in 0.2389 secs
-  99% in 0.3283 secs
-
-Details (average, fastest, slowest):
-  DNS+dialup:	0.0018 secs, 0.0047 secs, 0.3316 secs
-  DNS-lookup:	0.0005 secs, 0.0000 secs, 0.0023 secs
-  req write:	0.0000 secs, 0.0000 secs, 0.0004 secs
-  resp wait:	0.0728 secs, 0.0046 secs, 0.3204 secs
-  resp read:	0.0001 secs, 0.0000 secs, 0.0078 secs
-
-Status code distribution:
-  [200]	200 responses
-
-```
-
-### ERB #2
-
-```
-Summary:
-  Total:	0.2986 secs
-  Slowest:	0.2282 secs
-  Fastest:	0.0054 secs
-  Average:	0.0659 secs
-  Requests/sec:	669.8688
-
-  Total data:	1533800 bytes
-  Size/request:	7669 bytes
-
-Response time histogram:
-  0.005 [1]	|■
-  0.028 [56]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.050 [33]	|■■■■■■■■■■■■■■■■■■■■■■■■
-  0.072 [27]	|■■■■■■■■■■■■■■■■■■■
-  0.094 [28]	|■■■■■■■■■■■■■■■■■■■■
-  0.117 [24]	|■■■■■■■■■■■■■■■■■
-  0.139 [17]	|■■■■■■■■■■■■
-  0.161 [6]	|■■■■
-  0.184 [4]	|■■■
-  0.206 [2]	|■
-  0.228 [2]	|■
-
-
-Latency distribution:
-  10% in 0.0091 secs
-  25% in 0.0225 secs
-  50% in 0.0607 secs
-  75% in 0.0994 secs
-  90% in 0.1254 secs
-  95% in 0.1567 secs
-  99% in 0.2258 secs
-
-Details (average, fastest, slowest):
-  DNS+dialup:	0.0014 secs, 0.0054 secs, 0.2282 secs
-  DNS-lookup:	0.0004 secs, 0.0000 secs, 0.0022 secs
-  req write:	0.0001 secs, 0.0000 secs, 0.0025 secs
-  resp wait:	0.0640 secs, 0.0053 secs, 0.2207 secs
-  resp read:	0.0001 secs, 0.0000 secs, 0.0055 secs
-
-Status code distribution:
-  [200]	200 responses
-```
-
-### SLIM #1
-
-```
-Summary:
-  Total:	0.3701 secs
-  Slowest:	0.3536 secs
-  Fastest:	0.0049 secs
-  Average:	0.0759 secs
-  Requests/sec:	540.4134
-
-  Total data:	1286200 bytes
-  Size/request:	6431 bytes
-
-Response time histogram:
-  0.005 [1]	|
-  0.040 [108]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.075 [21]	|■■■■■■■■
-  0.109 [14]	|■■■■■
-  0.144 [6]	|■■
-  0.179 [13]	|■■■■■
-  0.214 [18]	|■■■■■■■
-  0.249 [11]	|■■■■
-  0.284 [5]	|■■
-  0.319 [1]	|
-  0.354 [2]	|■
-
-
-Latency distribution:
-  10% in 0.0075 secs
-  25% in 0.0110 secs
-  50% in 0.0315 secs
-  75% in 0.1598 secs
-  90% in 0.2080 secs
-  95% in 0.2436 secs
-  99% in 0.3193 secs
-
-Details (average, fastest, slowest):
-  DNS+dialup:	0.0015 secs, 0.0049 secs, 0.3536 secs
-  DNS-lookup:	0.0004 secs, 0.0000 secs, 0.0019 secs
-  req write:	0.0001 secs, 0.0000 secs, 0.0035 secs
-  resp wait:	0.0737 secs, 0.0048 secs, 0.3466 secs
-  resp read:	0.0001 secs, 0.0000 secs, 0.0013 secs
-
-Status code distribution:
-  [200]	200 responses
-```
-
-### SLIM #2
-
-```
-Summary:
-  Total:	0.2850 secs
-  Slowest:	0.1944 secs
-  Fastest:	0.0058 secs
-  Average:	0.0613 secs
-  Requests/sec:	701.6319
-
-  Total data:	1286200 bytes
-  Size/request:	6431 bytes
-
-Response time histogram:
-  0.006 [1]	|■
-  0.025 [49]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.044 [37]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.062 [34]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.081 [23]	|■■■■■■■■■■■■■■■■■■■
-  0.100 [16]	|■■■■■■■■■■■■■
-  0.119 [11]	|■■■■■■■■■
-  0.138 [14]	|■■■■■■■■■■■
-  0.157 [6]	|■■■■■
-  0.176 [3]	|■■
-  0.194 [6]	|■■■■■
-
-
-Latency distribution:
-  10% in 0.0101 secs
-  25% in 0.0249 secs
-  50% in 0.0503 secs
-  75% in 0.0882 secs
-  90% in 0.1310 secs
-  95% in 0.1565 secs
-  99% in 0.1925 secs
-
-Details (average, fastest, slowest):
-  DNS+dialup:	0.0020 secs, 0.0058 secs, 0.1944 secs
-  DNS-lookup:	0.0005 secs, 0.0000 secs, 0.0026 secs
-  req write:	0.0001 secs, 0.0000 secs, 0.0078 secs
-  resp wait:	0.0585 secs, 0.0058 secs, 0.1944 secs
-  resp read:	0.0001 secs, 0.0000 secs, 0.0055 secs
-
-Status code distribution:
-  [200]	200 responses
-```
-
-### HAML #1
-
-```
-Summary:
-  Total:	0.3340 secs
-  Slowest:	0.2974 secs
-  Fastest:	0.0053 secs
-  Average:	0.0712 secs
-  Requests/sec:	598.8734
-
-  Total data:	1296600 bytes
-  Size/request:	6483 bytes
-
-Response time histogram:
-  0.005 [1]	|
-  0.034 [100]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.064 [28]	|■■■■■■■■■■■
-  0.093 [11]	|■■■■
-  0.122 [8]	|■■■
-  0.151 [9]	|■■■■
-  0.181 [16]	|■■■■■■
-  0.210 [13]	|■■■■■
-  0.239 [5]	|■■
-  0.268 [4]	|■■
-  0.297 [5]	|■■
-
-
-Latency distribution:
-  10% in 0.0077 secs
-  25% in 0.0109 secs
-  50% in 0.0343 secs
-  75% in 0.1404 secs
-  90% in 0.2034 secs
-  95% in 0.2380 secs
-  99% in 0.2920 secs
-
-Details (average, fastest, slowest):
-  DNS+dialup:	0.0023 secs, 0.0053 secs, 0.2974 secs
-  DNS-lookup:	0.0005 secs, 0.0000 secs, 0.0026 secs
-  req write:	0.0001 secs, 0.0000 secs, 0.0012 secs
-  resp wait:	0.0683 secs, 0.0052 secs, 0.2896 secs
-  resp read:	0.0001 secs, 0.0000 secs, 0.0004 secs
-
-Status code distribution:
-  [200]	200 responses
-```
-
-### HAML #2
-
-```
-Summary:
-  Total:	0.2863 secs
-  Slowest:	0.2503 secs
-  Fastest:	0.0055 secs
-  Average:	0.0590 secs
-  Requests/sec:	698.5472
-
-  Total data:	1296600 bytes
-  Size/request:	6483 bytes
-
-Response time histogram:
-  0.005 [1]	|■
-  0.030 [76]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-  0.054 [33]	|■■■■■■■■■■■■■■■■■
-  0.079 [27]	|■■■■■■■■■■■■■■
-  0.103 [26]	|■■■■■■■■■■■■■■
-  0.128 [19]	|■■■■■■■■■■
-  0.152 [8]	|■■■■
-  0.177 [7]	|■■■■
-  0.201 [1]	|■
-  0.226 [1]	|■
-  0.250 [1]	|■
-
-
-Latency distribution:
-  10% in 0.0089 secs
-  25% in 0.0200 secs
-  50% in 0.0455 secs
-  75% in 0.0913 secs
-  90% in 0.1265 secs
-  95% in 0.1539 secs
-  99% in 0.2159 secs
-
-Details (average, fastest, slowest):
-  DNS+dialup:	0.0017 secs, 0.0055 secs, 0.2503 secs
-  DNS-lookup:	0.0005 secs, 0.0000 secs, 0.0020 secs
-  req write:	0.0000 secs, 0.0000 secs, 0.0004 secs
-  resp wait:	0.0567 secs, 0.0054 secs, 0.2406 secs
-  resp read:	0.0001 secs, 0.0000 secs, 0.0043 secs
 
 Status code distribution:
   [200]	200 responses
