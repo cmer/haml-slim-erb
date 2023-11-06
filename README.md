@@ -38,7 +38,7 @@ Findings:
 -------------------------------------------------------------------------------------
 
 
-## ## Benchmarking Results - RAILS_ENV=production
+## Benchmarking Results - RAILS_ENV=production
 
 Min/Max threads: 5
 Workers: 10
