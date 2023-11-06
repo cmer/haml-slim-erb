@@ -1,3 +1,9 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception
+  before_action :load_notes
+
+  private
+
+  def load_notes
+    @notes = JSON.parse(Constants::NOTES, object_class: OpenStruct)
+  end
 end
