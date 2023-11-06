@@ -31,11 +31,10 @@ Findings:
 - All 3 templating languages are roughly equal in terms of performance.
 
 ## Request Per Second by environment
--------------------------------------------------------------------------------------
 |             | ERB #1   | ERB #2   | SLIM #1   | SLIM #2   | HAML #1   | HAML #2   |
+| ----------- | -------- | -------- | --------- | --------- | --------- | --------- |
 | Development | 45       | 48       | 46        | 49        | 49        | 46        |
 | Production  | 566      | 670      | 540       | 702       | 599       | 699       |
--------------------------------------------------------------------------------------
 
 
 ## Benchmarking Results - RAILS_ENV=production
